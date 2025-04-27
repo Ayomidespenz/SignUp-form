@@ -99,12 +99,12 @@ document.addEventListener("DOMContentLoaded", function () {
     
 
   // Load users from local storage
-  let clients = JSON.parse(localStorage.getItem("users")) || [];
+  let clients = JSON.parse(localStorage.getItem("clients")) || [];
 
   
     // Function to save users to local storage
     function saveToLocalStorage() {
-      localStorage.setItem("users", JSON.stringify(clients)); 
+      localStorage.setItem("clients", JSON.stringify(clients)); 
     };
     
 
@@ -199,4 +199,70 @@ document.addEventListener("DOMContentLoaded", function () {
       errorElement.textContent = "";
     }
     
+      // // Check if the email and password are correct
+      // showLoginLink.addEventListener("click", function (e) {
+      //   e.preventDefault();
+  
+      //   const loginEmail = document.getElementById("loginEmail");
+      //   const loginPassword = document.getElementById("loginPassword");
+  
+      //   if (loginEmail.value.trim() !== "" && loginPassword.value.trim() !== "") {
+      //     const clients = JSON.parse(localStorage.getItem("clients")) || [];
+      //     const user = clients.find(
+      //       (client) =>
+      //         client.email === loginEmail.value.trim() &&
+      //         client.password === loginPassword.value.trim()
+      //     );
+  
+      //     console.log("Clients array:", clients);
+      //     if (user) {
+      //       alert("Login successful");
+      //       loginEmail.value = "";
+      //       loginPassword.value = "";
+      //     } else {
+      //       alert("Invalid email or password");
+      //     }
+      //   } else {
+      //     alert("Please fill in all fields");
+      //   }
+      // });
+      // Login form submission
+const loginForm = document.getElementById("loginForm");
+
+loginForm.addEventListener("submit", function (e) {
+  e.preventDefault();
+
+  const loginEmail = document.getElementById("loginEmail");
+  const loginPassword = document.getElementById("loginPassword");
+
+  if (loginEmail.value.trim() !== "" && loginPassword.value.trim() !== "") {
+    let clients = [];
+    try {
+      const storedClients = localStorage.getItem("clients");
+      clients = storedClients ? JSON.parse(storedClients) : [];
+    } catch (error) {
+      console.error("Error loading users from local storage:", error);
+      alert("An error occurred. Please try again.");
+      return;
+    }
+
+    console.log("Clients array during login:", clients); // Debugging
+
+    const user = clients.find(
+      (client) =>
+        client.email === loginEmail.value.trim() &&
+        client.password === loginPassword.value.trim()
+    );
+
+    if (user) {
+      alert("Login successful");
+      loginEmail.value = "";
+      loginPassword.value = "";
+    } else {
+      alert("Invalid email or password");
+    }
+  } else {
+    alert("Please fill in all fields");
+  }
+});
   });
